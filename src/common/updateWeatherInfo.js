@@ -13,7 +13,8 @@ async function updateWeatherInfo(locationCode) {
   }
   const lat = location.coordinates.lat;
   const lon = location.coordinates.lon;
-  const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}?lang=id&unitGroup=metric&key=W53D3PBB5PC5A9AWEADBJQ8VJ&contentType=json`;
+  const VISUALCROSSING_KEY = process.env.VISUALCROSSING_KEY;
+  const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}?lang=id&unitGroup=metric&key=${VISUALCROSSING_KEY}&contentType=json`;
   try {
     const weatherInfoText = await fetch(url);
     const weatherInfo = await weatherInfoText.json();

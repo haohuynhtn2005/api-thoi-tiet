@@ -1,3 +1,4 @@
+require('dotenv/config');
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -6,7 +7,7 @@ const mongoConnect = require('./common/mongoConnect.js');
 const app = express();
 
 console.log('\x1b[2J\x1b[3J\x1b[H');
-// Connect to mongo
+
 // Use CORS middleware
 app.use(cors());
 // Use body parser
