@@ -1,0 +1,380 @@
+[
+  {
+    "code": "an-giang",
+    "name": "An Giang",
+    "region": "Nam Bộ",
+    "coordinates": { "lat": 10.4613, "lon": 105.3974 }
+  },
+  {
+    "code": "ba-ria-vung-tau",
+    "name": "Bà Rịa - Vũng Tàu",
+    "region": "Nam Bộ",
+    "coordinates": { "lat": 10.3439, "lon": 107.0891 }
+  },
+  {
+    "code": "bac-lieu",
+    "name": "Bạc Liêu",
+    "region": "Nam Bộ",
+    "coordinates": { "lat": 9.2923, "lon": 105.7152 }
+  },
+  {
+    "code": "bac-giang",
+    "name": "Bắc Giang",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 21.2693, "lon": 106.1917 }
+  },
+  {
+    "code": "bac-kan",
+    "name": "Bắc Kạn",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 22.1633, "lon": 105.8463 }
+  },
+  {
+    "code": "bac-ninh",
+    "name": "Bắc Ninh",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 21.1855, "lon": 106.0858 }
+  },
+  {
+    "code": "ben-tre",
+    "name": "Bến Tre",
+    "region": "Nam Bộ",
+    "coordinates": { "lat": 10.2415, "lon": 106.3833 }
+  },
+  {
+    "code": "binh-duong",
+    "name": "Bình Dương",
+    "region": "Nam Bộ",
+    "coordinates": { "lat": 10.9636, "lon": 106.6295 }
+  },
+  {
+    "code": "binh-dinh",
+    "name": "Bình Định",
+    "region": "Trung Bộ",
+    "coordinates": { "lat": 13.0808, "lon": 109.6776 }
+  },
+  {
+    "code": "binh-phuoc",
+    "name": "Bình Phước",
+    "region": "Nam Bộ",
+    "coordinates": { "lat": 11.7171, "lon": 106.6543 }
+  },
+  {
+    "code": "binh-thuan",
+    "name": "Bình Thuận",
+    "region": "Trung Bộ",
+    "coordinates": { "lat": 10.9333, "lon": 108.1066 }
+  },
+  {
+    "code": "ca-mau",
+    "name": "Cà Mau",
+    "region": "Nam Bộ",
+    "coordinates": { "lat": 9.1752, "lon": 105.1542 }
+  },
+  {
+    "code": "cao-bang",
+    "name": "Cao Bằng",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 22.66, "lon": 106.2477 }
+  },
+  {
+    "code": "can-tho",
+    "name": "Cần Thơ",
+    "region": "Nam Bộ",
+    "coordinates": { "lat": 10.0452, "lon": 105.7467 }
+  },
+  {
+    "code": "da-nang",
+    "name": "Đà Nẵng",
+    "region": "Trung Bộ",
+    "coordinates": { "lat": 16.0471, "lon": 108.2069 }
+  },
+  {
+    "code": "dak-lak",
+    "name": "Đắk Lắk",
+    "region": "Trung Bộ",
+    "coordinates": { "lat": 12.6423, "lon": 108.0774 }
+  },
+  {
+    "code": "dak-nong",
+    "name": "Đắk Nông",
+    "region": "Trung Bộ",
+    "coordinates": { "lat": 12.0075, "lon": 107.8097 }
+  },
+  {
+    "code": "dien-bien",
+    "name": "Điện Biên",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 21.0169, "lon": 103.0204 }
+  },
+  {
+    "code": "dong-nai",
+    "name": "Đồng Nai",
+    "region": "Nam Bộ",
+    "coordinates": { "lat": 10.9549, "lon": 106.9295 }
+  },
+  {
+    "code": "dong-thap",
+    "name": "Đồng Tháp",
+    "region": "Nam Bộ",
+    "coordinates": { "lat": 10.4593, "lon": 105.7442 }
+  },
+  {
+    "code": "gia-lai",
+    "name": "Gia Lai",
+    "region": "Trung Bộ",
+    "coordinates": { "lat": 13.9864, "lon": 108.008 }
+  },
+  {
+    "code": "ha-giang",
+    "name": "Hà Giang",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 22.826, "lon": 104.9832 }
+  },
+  {
+    "code": "ha-nam",
+    "name": "Hà Nam",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 20.5704, "lon": 105.899 }
+  },
+  {
+    "code": "ha-noi",
+    "name": "Hà Nội",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 21.0285, "lon": 105.8542 }
+  },
+  {
+    "code": "ha-tinh",
+    "name": "Hà Tĩnh",
+    "region": "Trung Bộ",
+    "coordinates": { "lat": 18.3386, "lon": 105.918 }
+  },
+  {
+    "code": "hai-duong",
+    "name": "Hải Dương",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 20.914, "lon": 106.2905 }
+  },
+  {
+    "code": "hai-phong",
+    "name": "Hải Phòng",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 20.8449, "lon": 106.6889 }
+  },
+  {
+    "code": "hau-giang",
+    "name": "Hậu Giang",
+    "region": "Nam Bộ",
+    "coordinates": { "lat": 9.7554, "lon": 105.3132 }
+  },
+  {
+    "code": "hoa-binh",
+    "name": "Hòa Bình",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 20.8049, "lon": 105.3391 }
+  },
+  {
+    "code": "hung-yen",
+    "name": "Hưng Yên",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 20.9833, "lon": 106.0667 }
+  },
+  {
+    "code": "khanh-hoa",
+    "name": "Khánh Hòa",
+    "region": "Trung Bộ",
+    "coordinates": { "lat": 12.2382, "lon": 109.1967 }
+  },
+  {
+    "code": "kien-giang",
+    "name": "Kiên Giang",
+    "region": "Nam Bộ",
+    "coordinates": { "lat": 10.0104, "lon": 104.264 }
+  },
+  {
+    "code": "kon-tum",
+    "name": "Kon Tum",
+    "region": "Trung Bộ",
+    "coordinates": { "lat": 14.3655, "lon": 108.0185 }
+  },
+  {
+    "code": "lai-chau",
+    "name": "Lai Châu",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 22.3319, "lon": 103.2686 }
+  },
+  {
+    "code": "lang-son",
+    "name": "Lạng Sơn",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 21.8523, "lon": 106.6757 }
+  },
+  {
+    "code": "lao-cai",
+    "name": "Lào Cai",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 22.3384, "lon": 103.976 }
+  },
+  {
+    "code": "lam-dong",
+    "name": "Lâm Đồng",
+    "region": "Trung Bộ",
+    "coordinates": { "lat": 11.9464, "lon": 108.4455 }
+  },
+  {
+    "code": "long-an",
+    "name": "Long An",
+    "region": "Nam Bộ",
+    "coordinates": { "lat": 10.58, "lon": 106.42 }
+  },
+  {
+    "code": "nam-dinh",
+    "name": "Nam Định",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 20.4125, "lon": 106.1641 }
+  },
+  {
+    "code": "nghe-an",
+    "name": "Nghệ An",
+    "region": "Trung Bộ",
+    "coordinates": { "lat": 19.2425, "lon": 105.7325 }
+  },
+  {
+    "code": "ninh-binh",
+    "name": "Ninh Bình",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 20.2594, "lon": 105.9732 }
+  },
+  {
+    "code": "ninh-thuan",
+    "name": "Ninh Thuận",
+    "region": "Trung Bộ",
+    "coordinates": { "lat": 11.5871, "lon": 108.9687 }
+  },
+  {
+    "code": "phu-tho",
+    "name": "Phú Thọ",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 21.31, "lon": 105.1983 }
+  },
+  {
+    "code": "phu-yen",
+    "name": "Phú Yên",
+    "region": "Trung Bộ",
+    "coordinates": { "lat": 13.0908, "lon": 109.3121 }
+  },
+  {
+    "code": "quang-binh",
+    "name": "Quảng Bình",
+    "region": "Trung Bộ",
+    "coordinates": { "lat": 17.4905, "lon": 106.5953 }
+  },
+  {
+    "code": "quang-nam",
+    "name": "Quảng Nam",
+    "region": "Trung Bộ",
+    "coordinates": { "lat": 15.95, "lon": 108.002 }
+  },
+  {
+    "code": "quang-ngai",
+    "name": "Quảng Ngãi",
+    "region": "Trung Bộ",
+    "coordinates": { "lat": 15.1408, "lon": 108.8041 }
+  },
+  {
+    "code": "quang-ninh",
+    "name": "Quảng Ninh",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 21.0465, "lon": 107.0831 }
+  },
+  {
+    "code": "quang-tri",
+    "name": "Quảng Trị",
+    "region": "Trung Bộ",
+    "coordinates": { "lat": 16.7727, "lon": 107.5858 }
+  },
+  {
+    "code": "soc-trang",
+    "name": "Sóc Trăng",
+    "region": "Nam Bộ",
+    "coordinates": { "lat": 9.5891, "lon": 105.9819 }
+  },
+  {
+    "code": "son-la",
+    "name": "Sơn La",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 21.322, "lon": 103.9061 }
+  },
+  {
+    "code": "tay-ninh",
+    "name": "Tây Ninh",
+    "region": "Nam Bộ",
+    "coordinates": { "lat": 11.5656, "lon": 106.1097 }
+  },
+  {
+    "code": "thai-binh",
+    "name": "Thái Bình",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 20.4466, "lon": 106.3374 }
+  },
+  {
+    "code": "thai-nguyen",
+    "name": "Thái Nguyên",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 21.5941, "lon": 105.854 }
+  },
+  {
+    "code": "thanh-hoa",
+    "name": "Thanh Hóa",
+    "region": "Trung Bộ",
+    "coordinates": { "lat": 19.8045, "lon": 105.8324 }
+  },
+  {
+    "code": "thanh-pho-hue",
+    "name": "Thành phố Huế",
+    "region": "Trung Bộ",
+    "coordinates": { "lat": 16.4625, "lon": 107.5907 }
+  },
+  {
+    "code": "tien-giang",
+    "name": "Tiền Giang",
+    "region": "Nam Bộ",
+    "coordinates": { "lat": 10.5603, "lon": 106.3458 }
+  },
+  {
+    "code": "tp-ho-chi-minh",
+    "name": "TP Hồ Chí Minh",
+    "region": "Nam Bộ",
+    "coordinates": { "lat": 10.7752, "lon": 106.6345 }
+  },
+  {
+    "code": "tra-vinh",
+    "name": "Trà Vinh",
+    "region": "Nam Bộ",
+    "coordinates": { "lat": 9.9292, "lon": 106.3271 }
+  },
+  {
+    "code": "tuyen-quang",
+    "name": "Tuyên Quang",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 21.8233, "lon": 105.2096 }
+  },
+  {
+    "code": "vinh-long",
+    "name": "Vĩnh Long",
+    "region": "Nam Bộ",
+    "coordinates": { "lat": 10.2532, "lon": 105.9701 }
+  },
+  {
+    "code": "vinh-phuc",
+    "name": "Vĩnh Phúc",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 21.3033, "lon": 105.586 }
+  },
+  {
+    "code": "yen-bai",
+    "name": "Yên Bái",
+    "region": "Bắc Bộ",
+    "coordinates": { "lat": 21.7125, "lon": 104.8617 }
+  }
+]
