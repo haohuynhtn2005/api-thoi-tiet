@@ -1,9 +1,7 @@
 const LangModel = require('../models/LangModel.js');
-const LocationModel = require('../models/LocationModel.js');
 
 // Update weather info
-async function updateWeatherInfo(locationCode) {
-  const location = await LocationModel.findOne({ code: locationCode });
+async function updateWeatherInfo(location) {
   if (
     !location ||
     (location.weatherInfo &&
@@ -34,15 +32,11 @@ async function updateWeatherInfo(locationCode) {
       const descriptionResult = firstLetter + joinedString.slice(1);
       weatherInfo.currentConditions.conditions = descriptionResult;
     }
-    await location.updateOne(
-      {
-        weatherInfo,
-        updatedAt: new Date(),
-      },
-      {
-        runValidators: true,
-      }
-    );
+    location.set({
+      updatedAt: new Date(),
+      weatherInfo,
+    });
+    await location.save();
   } catch (e) {
     console.error(e);
   }
