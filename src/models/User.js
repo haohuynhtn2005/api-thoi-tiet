@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const UserSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -12,10 +12,27 @@ const UserSchema = new mongoose.Schema(
     },
   },
   {
+    collection: 'users',
     timestamps: true,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
   }
 );
 
-module.exports = mongoose.model('User', UserSchema);
+// Middleware to convert E11000 to a validation error
+userSchema.post('save', function (error, doc, next) {
+  if (error.name === 'MongoServerError' && error.code === 11000) {
+    const validationError = new mongoose.Error.ValidationError();
+    validationError.addError(
+      'email',
+      new mongoose.Error.ValidatorError({
+        message: 'Email already exists',
+      })
+    );
+    next(validationError);
+  } else {
+    next(error);
+  }
+});
+
+module.exports = mongoose.model('User', userSchema);

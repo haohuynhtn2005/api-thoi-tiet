@@ -7,6 +7,7 @@ indexRouter.get('/getRandomLocations', indexController.getRandomLocations);
 indexRouter.get('/search/:locationCode', indexController.searchLocation);
 indexRouter.post('/reversegeo', indexController.reverseGeo);
 indexRouter.post('/nearbyLocations', indexController.nearbyLocations);
+indexRouter.get('/getLocations', indexController.getLocations)
 
 indexRouter.post("/register", indexController.register);
 indexRouter.post("/login", indexController.login);

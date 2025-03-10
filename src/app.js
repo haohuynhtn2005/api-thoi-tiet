@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const indexRouter = require('./routes/indexRouter.js');
 const mongoConnect = require('./common/mongoConnect.js');
+const managerRouter = require('./routes/managerRouter.js');
 const app = express();
 
 // Connect to mongodb
@@ -30,6 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use('/', indexRouter);
+app.use('/manager', managerRouter)
 
 const port = 3000;
 app.listen(port, () => {

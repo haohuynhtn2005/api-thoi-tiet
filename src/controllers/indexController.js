@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { Types } = require('mongoose');
 const authMiddleware = require('../middleware/authMiddleware');
+const getValidationError = require('../common/getValidationError');
 
 const indexController = {
   getLocationOpts: async (req, res) => {
@@ -36,8 +37,7 @@ const indexController = {
     const resLocations = [];
     for (let i = 0; i < targetIndexs.length; i += 1) {
       const location = locations[targetIndexs[i]];
-      // await
-      updateWeatherInfo(location);
+      await updateWeatherInfo(location);
       resLocations.push(location);
     }
     res.json(resLocations);
@@ -111,9 +111,26 @@ const indexController = {
     for (let i = 1; i < 9; i += 1) {
       const loc = locations[i];
       locationsToReturn.push(loc);
-      updateWeatherInfo(loc);
+      await updateWeatherInfo(loc);
     }
     return res.json(locationsToReturn);
+  },
+  getLocations: async (req, res) => {
+    try {
+      const locations = await LocationModel.find().limit(100);
+
+      res.json(
+        locations.map((loc) => {
+          loc = loc.toObject();
+          const currentConditions = loc.weatherInfo.currentConditions;
+          loc.weatherInfo = { currentConditions };
+          return loc;
+        })
+      );
+    } catch (error) {
+      console.error('Error fetching locations:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
   },
   register: async (req, res) => {
     try {
@@ -125,8 +142,16 @@ const indexController = {
       await newUser.save();
 
       res.status(201).json({ message: 'User registered successfully' });
-    } catch (err) {
-      res.status(500).json({ error: err.message });
+    } catch (e) {
+      if (e.name == 'ValidationError') {
+        const validationError = getValidationError(e);
+        return res.status(400).json({
+          error: 'Bad request',
+          validationError,
+        });
+      }
+      console.error('Loi dang ky', e);
+      res.status(500).json({ error: e.message });
     }
   },
   login: async (req, res) => {
@@ -134,11 +159,11 @@ const indexController = {
       const { email, password } = req.body;
       const user = await User.findOne({ email });
 
-      if (!user) return res.status(400).json({ message: 'User not found' });
+      if (!user)
+        return res.status(400).json({ message: 'Không tìm thấy tài khoản' });
 
       const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch)
-        return res.status(400).json({ message: 'Invalid credentials' });
+      if (!isMatch) return res.status(400).json({ message: 'Sai mật khẩu' });
 
       const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
         expiresIn: '24h',
