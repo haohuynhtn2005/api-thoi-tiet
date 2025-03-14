@@ -1,17 +1,11 @@
 const haversine = require('../common/haversine');
 const reverseGeocode = require('../common/reverseGeocode');
 const updateWeatherInfo = require('../common/updateWeatherInfo');
-const LocationModel = require('../models/LocationModel');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const { Types } = require('mongoose');
-const authMiddleware = require('../middleware/authMiddleware');
-const getValidationError = require('../common/getValidationError');
+const Location = require('../models/Location');
 
 const indexController = {
   getLocationOpts: async (req, res) => {
-    const locations = await LocationModel.find().limit(1000);
+    const locations = await Location.find().sort({ name: 1 }).limit(1000);
     res.json(
       locations.map((loc) => {
         return {
@@ -21,8 +15,9 @@ const indexController = {
       })
     );
   },
+
   getRandomLocations: async (req, res) => {
-    const locations = await LocationModel.find().limit(1000);
+    const locations = await Location.find().limit(1000);
     const locationIndexes = [];
     for (let i = 0; i < locations.length; i += 1) {
       locationIndexes.push(i);
@@ -42,15 +37,17 @@ const indexController = {
     }
     res.json(resLocations);
   },
+
   searchLocation: async (req, res) => {
     const locationCode = req.params.locationCode;
-    const location = await LocationModel.findOne({ code: locationCode });
+    const location = await Location.findOne({ code: locationCode });
     if (!location) {
       return res.status(404).json({ message: 'Không tìm thấy khu vực' });
     }
     await updateWeatherInfo(location);
     res.json(location.weatherInfo);
   },
+
   reverseGeo: async (req, res) => {
     const { lat, lon } = req.body;
 
@@ -79,6 +76,7 @@ const indexController = {
 
     return res.json(location.weatherInfo);
   },
+
   nearbyLocations: async (req, res) => {
     const { lat, lon } = req.body;
     if (!lat || !lon) {
@@ -91,7 +89,7 @@ const indexController = {
     if (isNaN(latitude) || isNaN(longitude)) {
       return res.status(400).json({ message: 'Invalid latitude or longitude' });
     }
-    const locations = await LocationModel.find();
+    const locations = await Location.find();
     locations.sort((a, b) => {
       const distanceA = haversine(
         lat,
@@ -115,9 +113,10 @@ const indexController = {
     }
     return res.json(locationsToReturn);
   },
+  
   getLocations: async (req, res) => {
     try {
-      const locations = await LocationModel.find().limit(100);
+      const locations = await Location.find().limit(100);
 
       res.json(
         locations.map((loc) => {
@@ -132,68 +131,6 @@ const indexController = {
       res.status(500).json({ message: 'Server error' });
     }
   },
-  register: async (req, res) => {
-    try {
-      const { name, email, password } = req.body;
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
-
-      const newUser = new User({ name, email, password: hashedPassword });
-      await newUser.save();
-
-      res.status(201).json({ message: 'User registered successfully' });
-    } catch (e) {
-      if (e.name == 'ValidationError') {
-        const validationError = getValidationError(e);
-        return res.status(400).json({
-          error: 'Bad request',
-          validationError,
-        });
-      }
-      console.error('Loi dang ky', e);
-      res.status(500).json({ error: e.message });
-    }
-  },
-  login: async (req, res) => {
-    try {
-      const { email, password } = req.body;
-      const user = await User.findOne({ email });
-
-      if (!user)
-        return res.status(400).json({ message: 'Không tìm thấy tài khoản' });
-
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) return res.status(400).json({ message: 'Sai mật khẩu' });
-
-      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-        expiresIn: '24h',
-      });
-
-      res.cookie('token', token, { httpOnly: true, secure: false });
-      res.json({ message: 'Login successful', token });
-    } catch (err) {
-      res.status(500).json({ message: err.message });
-    }
-  },
-  logout: (req, res) => {
-    res.clearCookie('token');
-    res.json({ message: 'Logout successful' });
-  },
-  getUser: [
-    authMiddleware,
-    async function getUser(req, res) {
-      const user = await User.findOne({
-        _id: Types.ObjectId.createFromHexString(req.user.userId),
-      });
-      if (!user)
-        return res.status(401).json({ message: 'Không tìm thấy tài khoản' });
-      res.json({
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      });
-    },
-  ],
 };
 
 module.exports = indexController;

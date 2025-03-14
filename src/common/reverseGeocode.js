@@ -1,4 +1,4 @@
-const LocationModel = require('../models/LocationModel.js');
+const Location = require('../models/Location.js');
 const haversine = require('./haversine.js');
 
 // Reverse geocoding function to match the nearest location based on lat/lon
@@ -6,7 +6,7 @@ async function reverseGeocode(lat, lon) {
   let location = null;
   let minDistance = Infinity;
 
-  const locations = await LocationModel.find().limit(1000);
+  const locations = await Location.find().limit(1000);
 
   for (const loc of locations) {
     const distance = haversine(

@@ -45,11 +45,11 @@ locationSchema.pre('save', async function (next) {
   if (!location.isModified('code')) return next();
 
   try {
-    const existingLocation = await LocationModel.findOne({ code: location.code });
+    const existingLocation = await Location.findOne({ code: location.code });
     if (existingLocation) {
       const validationError = new mongoose.Error.ValidationError(null);
       validationError.addError('code', new mongoose.Error.ValidatorError({
-        message: 'Location code already exists',
+        message: 'Mã khu vực đã tồn tại',
         type: 'unique',
         path: 'code',
         value: location.code
@@ -62,6 +62,6 @@ locationSchema.pre('save', async function (next) {
   }
 });
 
-const LocationModel = mongoose.model('Location', locationSchema);
+const Location = mongoose.model('Location', locationSchema);
 
-module.exports = LocationModel;
+module.exports = Location;

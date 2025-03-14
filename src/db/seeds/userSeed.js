@@ -1,5 +1,6 @@
 const User = require('../../models/User');
 const bcrypt = require('bcryptjs');
+const { faker } = require('@faker-js/faker');
 
 async function userSeed() {
   await User.deleteMany();
@@ -12,22 +13,30 @@ async function userSeed() {
       role: 'admin',
     },
     {
-      name: 'Staff 01',
-      email: 'staff01@mail.com',
+      name: 'Staff 1',
+      email: 'staff1@mail.com',
       password: await bcrypt.hash('', salt),
       role: 'staff',
     },
     {
-      name: 'User 01',
-      email: 'user01@mail.com',
+      name: 'User 1',
+      email: 'user1@mail.com',
       password: await bcrypt.hash('', salt),
     },
-    {
-      name: 'User 02',
-      email: 'user02@mail.com',
-      password: await bcrypt.hash('', salt),
-    },
+    ...Array.from({ length: 12 }).map((_, idx) => ({
+      name: faker.person.fullName(),
+      email: `staff${idx + 2}@.mail.com`,
+      password: bcrypt.hashSync('', salt),
+      role: 'staff',
+    })),
+    ...Array.from({ length: 12 }).map(() => ({
+      name: faker.person.fullName(),
+      email: faker.internet.email(),
+      password: bcrypt.hashSync('', salt),
+      role: 'user',
+    })),
   ];
+
   await User.insertMany(users);
 }
 

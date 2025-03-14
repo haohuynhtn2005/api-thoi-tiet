@@ -1,4 +1,4 @@
-const LangModel = require('../models/LangModel.js');
+const Lang = require('../models/Lang.js');
 
 // Update weather info
 async function updateWeatherInfo(location) {
@@ -21,7 +21,7 @@ async function updateWeatherInfo(location) {
       weatherInfo.currentConditions.conditions.split(', ');
     const conditionDescs = [];
     for (const code of conditionsCodes) {
-      const cond = await LangModel.findOne({ code });
+      const cond = await Lang.findOne({ code });
       if (cond) {
         conditionDescs.push(cond.desc.toLowerCase());
       }
