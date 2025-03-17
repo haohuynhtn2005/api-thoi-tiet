@@ -50,12 +50,12 @@ const auhtController = {
       res.status(500).json({ message: err.message });
     }
   },
-  
+
   logout: (req, res) => {
     res.clearCookie('token');
     res.json({ message: 'Logout successful' });
   },
-  
+
   getUser: [
     auth,
     async function getUser(req, res) {
@@ -65,6 +65,7 @@ const auhtController = {
       if (!user)
         return res.status(401).json({ message: 'Không tìm thấy tài khoản' });
       res.json({
+        id: user._id,
         name: user.name,
         email: user.email,
         role: user.role,

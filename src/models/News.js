@@ -2,16 +2,24 @@ const mongoose = require('mongoose');
 
 const NewsSchema = new mongoose.Schema(
   {
-    title: String, // Tiêu đề bài viết
-    description: String, // Mô tả ngắn
+    title: String,
+    description: String,
     category: {
       type: String,
       enum: ['Cảnh báo', 'Dự báo', 'Tổng hợp', 'Người dùng'], // Các danh mục hợp lệ
       required: true,
     },
     image: String, // Link ảnh minh họa
-    author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Tác giả
     createdAt: { type: Date, default: Date.now }, // Ngày đăng
+    author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Tác giả
+    comments: [
+      {
+        user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Người bình luận
+        content: String, // Nội dung bình luận
+        createdAt: { type: Date, default: Date.now }, // Thời gian bình luận
+        updatedAt: { type: Date, default: Date.now }, // Thời gian bình luận
+      },
+    ], // Danh sách bình luận
   },
   {
     toObject: { virtuals: true },

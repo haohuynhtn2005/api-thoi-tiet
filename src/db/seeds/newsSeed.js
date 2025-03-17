@@ -105,11 +105,6 @@ const newsData = [
 
 const newsSeed = async () => {
   await News.deleteMany();
-  const users = await User.find();
-  if (users.length === 0) {
-    console.error('No users found. Please add some users first.');
-    process.exit(1);
-  }
   const uploadDir = path.join(__dirname, '../../public/uploads');
   let images;
   try {
@@ -124,6 +119,11 @@ const newsSeed = async () => {
     console.error('No images found in the upload directory.');
     process.exit(1);
   }
+  const users = await User.find();
+  if (users.length === 0) {
+    console.error('No users found. Please add some users first.');
+    process.exit(1);
+  }
 
   const endDate = new Date();
   endDate.setHours(0, 0, 0, 0);
@@ -132,19 +132,34 @@ const newsSeed = async () => {
     (endDate - startDate) / (24 * 60 * 60 * 1000)
   );
 
-  const newsData = Array.from({ length: daysDifference }).map((_, index) => ({
-    title: faker.lorem.sentence(),
-    description: faker.lorem.paragraphs(20, '<br/>\n'),
-    category: faker.helpers.arrayElement([
-      'Cảnh báo',
-      'Dự báo',
-      'Tổng hợp',
-      'Người dùng',
-    ]),
-    image: faker.helpers.arrayElement(images),
-    author: faker.helpers.arrayElement(users)._id,
-    createdAt: new Date(startDate.getTime() + index * 24 * 60 * 60 * 1000), // Increment by one day
-  }));
+  const newsData = Array.from({ length: daysDifference }).map((_, index) => {
+    const createdAt = new Date(
+      startDate.getTime() + index * 24 * 60 * 60 * 1000
+    );
+
+    const numComments = faker.number.int({ min: 10, max: 15 });
+    const uniqueUsers = faker.helpers.shuffle(users).slice(0, numComments);
+    const comments = uniqueUsers.map((user) => ({
+      user: user._id,
+      content: faker.lorem.sentences(faker.number.int({ min: 1, max: 3 })),
+      createdAt: faker.date.between({ from: createdAt, to: new Date() }),
+    }));
+
+    return {
+      title: faker.lorem.sentence(),
+      description: faker.lorem.paragraphs(20, '<br/>\n'),
+      category: faker.helpers.arrayElement([
+        'Cảnh báo',
+        'Dự báo',
+        'Tổng hợp',
+        'Người dùng',
+      ]),
+      image: faker.helpers.arrayElement(images),
+      author: faker.helpers.arrayElement(users)._id,
+      createdAt,
+      comments,
+    };
+  });
 
   await News.insertMany(newsData);
 };

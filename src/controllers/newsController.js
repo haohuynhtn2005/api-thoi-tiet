@@ -1,5 +1,6 @@
 const News = require('../models/News');
 const path = require('path');
+const fs = require('fs');
 const { isValidObjectId } = require('mongoose');
 
 const newsController = {
@@ -28,7 +29,9 @@ const newsController = {
         return res.status(400).json({ message: 'ID không hợp lệ' });
       }
 
-      const news = await News.findById(id).populate('author', 'name');
+      const news = await News.findById(id)
+        .populate('author', 'name')
+        .populate('comments.user', 'name content createdAt');
 
       if (!news) {
         return res.status(404).json({ message: 'Không tìm thấy bản tin' });
@@ -44,47 +47,116 @@ const newsController = {
   // Tạo tin tức mới
   createNews: async (req, res) => {
     try {
-      const { title, description, category, link } = req.body;
-      if (!title || !description || !category || !link) {
-        return res
-          .status(400)
-          .json({ message: 'Vui lòng điền đầy đủ thông tin' });
-      }
+      const { title, description, category } = req.body;
 
       let imagePath = '';
-
-      // Kiểm tra nếu có file được gửi lên
       if (req.files && req.files.image) {
         const image = req.files.image;
         const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
         if (!allowedTypes.includes(image.mimetype)) {
-          return res
-            .status(400)
-            .json({ message: 'Chỉ hỗ trợ các định dạng ảnh: JPG, JPEG, PNG' });
+          return res.status(400).json({ message: 'Chỉ hỗ trợ JPG, JPEG, PNG' });
         }
 
         const extension = path.extname(image.name);
-        const filename = Date.now() + extension;
-        imagePath = path.join(__dirname, '../uploads/', filename);
+        const filename = `${Date.now()}${extension}`;
+        const uploadDir = path.join(__dirname, '../public/uploads');
 
-        // Di chuyển file ảnh vào thư mục uploads
-        await image.mv(imagePath);
+        imagePath = filename;
+        await image.mv(path.join(uploadDir, filename));
       }
 
       const newNews = new News({
         title,
         description,
         category,
-        link,
         image: imagePath,
       });
-
       await newNews.save();
+
       res
         .status(201)
         .json({ message: 'Tin tức đã được tạo thành công', data: newNews });
     } catch (error) {
+      console.error('Lỗi khi tạo tin tức:', error);
+      res.status(500).json({ message: 'Đã xảy ra lỗi', error: error.message });
+    }
+  },
+
+  // Cập nhật tin tức
+  updateNews: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { title, description, category } = req.body;
+
+      const existingNews = await News.findById(id);
+      if (!existingNews) {
+        return res.status(404).json({ message: 'Không tìm thấy tin tức' });
+      }
+
+      let imagePath = existingNews.image;
+      if (req.files && req.files.image) {
+        const image = req.files.image;
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+        if (!allowedTypes.includes(image.mimetype)) {
+          return res.status(400).json({ message: 'Chỉ hỗ trợ JPG, JPEG, PNG' });
+        }
+
+        const extension = path.extname(image.name);
+        const filename = `${Date.now()}${extension}`;
+        const uploadDir = path.join(__dirname, '../public/uploads');
+
+        imagePath = filename;
+        await image.mv(path.join(uploadDir, filename));
+
+        // Xóa ảnh cũ nếu có
+        if (existingNews.image) {
+          const oldImagePath = path.join(__dirname, '../', existingNews.image);
+          if (fs.existsSync(oldImagePath)) {
+            fs.unlinkSync(oldImagePath);
+          }
+        }
+      }
+
+      existingNews.title = title || existingNews.title;
+      existingNews.description = description || existingNews.description;
+      existingNews.category = category || existingNews.category;
+      existingNews.image = imagePath;
+
+      await existingNews.save();
+      res.json({ message: 'Tin tức đã được cập nhật', data: existingNews });
+    } catch (error) {
+      console.error('Lỗi khi cập nhật tin tức:', error);
+      res.status(500).json({ message: 'Đã xảy ra lỗi', error: error.message });
+    }
+  },
+
+  // 🗑️ Xóa tin tức
+  deleteNews: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const news = await News.findById(id);
+      if (!news) {
+        return res.status(404).json({ message: 'Không tìm thấy tin tức' });
+      }
+
+      // Xóa ảnh khỏi thư mục nếu có
+      if (news.image) {
+        const imagePath = path.join(
+          __dirname,
+          '../public/uploads/',
+          news.image
+        );
+        if (fs.existsSync(imagePath)) {
+          fs.unlinkSync(imagePath);
+        }
+      }
+
+      await News.findByIdAndDelete(id);
+      res.json({ message: 'Tin tức đã được xóa thành công' });
+    } catch (error) {
+      console.error('Lỗi khi xóa tin tức:', error);
       res.status(500).json({ message: 'Đã xảy ra lỗi', error: error.message });
     }
   },
