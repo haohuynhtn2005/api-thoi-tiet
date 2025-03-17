@@ -1,10 +1,15 @@
 const News = require('../models/News');
+const User = require('../models/User');
 
 const commentController = {
   postComment: async (req, res) => {
-    const userId = req.user?.userId;
+    let { userId, uid } = req.user;
     const { newsId, content } = req.body; // Get user ID and comment content from body
     try {
+      if (!userId) {
+        userId = (await User.findOne({ uid }))?.id;
+      }
+
       // Find the news article
       const news = await News.findById(newsId);
       if (!news) {

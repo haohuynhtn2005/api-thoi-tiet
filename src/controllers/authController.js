@@ -1,9 +1,9 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const { Types } = require('mongoose');
-const auth = require('../middleware/auth');
+const admin = require('firebase-admin');
 const getValidationError = require('../common/getValidationError');
+const authOrGoogle = require('../middleware/authOrGoogle');
 
 const auhtController = {
   register: async (req, res) => {
@@ -57,11 +57,14 @@ const auhtController = {
   },
 
   getUser: [
-    auth,
+    authOrGoogle,
     async function getUser(req, res) {
-      const user = await User.findOne({
-        _id: Types.ObjectId.createFromHexString(req.user.userId),
-      });
+      const { userId, uid } = req.user;
+
+      const user = userId
+        ? await User.findById(userId)
+        : await User.findOne({ uid });
+
       if (!user)
         return res.status(401).json({ message: 'Không tìm thấy tài khoản' });
       res.json({
@@ -72,6 +75,43 @@ const auhtController = {
       });
     },
   ],
+
+  authGoogle: async (req, res) => {
+    const { idToken } = req.body;
+
+    try {
+      const decodedToken = await admin.auth().verifyIdToken(idToken);
+      const { uid, name, email } = decodedToken;
+
+      let user = await User.findOne({ uid });
+
+      if (!user) {
+        // Save new user
+        user = new User({ uid, name, email, password: uid });
+        await user.save();
+      } else {
+        user.name = name;
+        user.email = email;
+        await user.save();
+      }
+
+      // Generate JWT
+      const token = jwt.sign({ uid, name, email }, process.env.JWT_SECRET, {
+        expiresIn: '24h',
+      });
+
+      // Set token in cookie
+      res.cookie('token', token, { httpOnly: true, secure: false });
+      res.json({
+        message: 'Login successful',
+        user: { uid, name, email },
+        token,
+      });
+    } catch (error) {
+      console.error('Error authGoogle', error);
+      res.status(401).json({ message: 'Invalid Firebase ID token' });
+    }
+  },
 };
 
 module.exports = auhtController;

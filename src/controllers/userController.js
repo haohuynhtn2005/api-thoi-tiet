@@ -105,6 +105,37 @@ const userController = {
       res.status(500).json({ error: e.message });
     }
   },
+
+  updateProfile: async (req, res) => {
+    try {
+      const { userId } = req.user; // Assuming user ID is stored in req.user from authentication middleware
+      const { name, email, password } = req.body;
+
+      let updatedFields = {};
+      if (name) updatedFields.name = name;
+      if (email) updatedFields.email = email;
+      if (password) {
+        const salt = await bcrypt.genSalt(10);
+        updatedFields.password = await bcrypt.hash(password, salt);
+      }
+
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { $set: updatedFields },
+        { new: true, runValidators: true }
+      );
+
+      if (!updatedUser) {
+        return res.status(404).json({ message: 'Không tìm thấy user' });
+      }
+
+      res
+        .status(200)
+        .json({ message: 'Cập nhật thành công', user: updatedUser });
+    } catch (error) {
+      res.status(500).json({ message: 'Lỗi máy chủ', error });
+    }
+  },
 };
 
 module.exports = userController;

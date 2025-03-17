@@ -11,6 +11,15 @@ const app = express();
 const fileUpload = require('express-fileupload');
 const path = require('path');
 const adminRouter = require('./routes/adminRouter.js');
+const admin = require('firebase-admin');
+
+
+// Initialize Firebase Admin SDK
+const serviceAccount = require("./firebase-admin.json");
+const News = require('./models/News.js');
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
 // Connect to mongodb
 mongoConnect();
@@ -44,7 +53,7 @@ app.use('/', indexRouter);
 app.use('/staff', staffRouter);
 app.use('/admin', adminRouter);
 
-app.use((req, res, next) => {
+app.use((req, res) => {
   res.status(404).json({ message: 'Not Found' });
 });
 
