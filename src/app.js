@@ -13,10 +13,8 @@ const path = require('path');
 const adminRouter = require('./routes/adminRouter.js');
 const admin = require('firebase-admin');
 
-
 // Initialize Firebase Admin SDK
-const serviceAccount = require("./firebase-admin.json");
-const News = require('./models/News.js');
+const serviceAccount = require(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
